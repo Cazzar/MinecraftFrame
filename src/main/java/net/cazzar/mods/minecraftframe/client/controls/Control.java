@@ -73,8 +73,8 @@ public abstract class Control {
     /**
      * This should handle all rendering of each control,
      * assuming translation is already done by the system.
-     * @param mouseX
-     * @param mouseY
+     * @param mouseX the mouse position in relative to the top right hand corner of the GUI
+     * @param mouseY the mouse position in relative to the top right hand corner of the GUI
      */
     public abstract void render(int mouseX, int mouseY);
 
@@ -90,7 +90,7 @@ public abstract class Control {
         this.size = size;
     }
 
-    public void setPostition(int x, int y) {
+    public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }

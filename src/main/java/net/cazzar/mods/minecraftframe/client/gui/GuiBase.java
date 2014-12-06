@@ -12,6 +12,13 @@ import java.util.List;
  * Created by Cayde on 6/12/2014.
  */
 public class GuiBase extends GuiScreen {
+    protected int xSize = 0;
+    protected int ySize = 0;
+    protected int xPadding = 0;
+    protected int yPadding = 0;
+
+    private int rgb = -1;
+
     List<Control> controls = Lists.newLinkedList();
     private boolean pauses = false;
 
@@ -26,30 +33,59 @@ public class GuiBase extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        //Temp draw background
+        final int xStart = (width - xSize) / 2;
+        final int yStart = (height - ySize) / 2;
+
+        drawRect(xStart, yStart, xStart + xSize, yStart + ySize, rgb);
+
         super.drawScreen(mouseX, mouseY, partialTicks);
+
+        GL11.glPushMatrix();
+
+        GL11.glTranslated(xStart + xPadding, yStart + yPadding, 0);
 
         for (Control control : controls) {
             GL11.glPushMatrix();
             //since we can be a little safer if we push and pop ourselves.
             GL11.glTranslated(control.getX(), control.getY(), 0);
-            control.render(mouseX, mouseY);
+            control.render(mouseX - xStart, mouseY - yStart);
             GL11.glPopMatrix();
         }
+
+        GL11.glPopMatrix();
     }
 
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        final int xStart = (width - xSize) / 2;
+        final int yStart = (height - ySize) / 2;
+        //we do not need to recalculate for every control
+
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
         for (Control control : controls) {
             //Since we dont want to send unnecessary function calls.
-            boolean inX = (control.getX() <= mouseX) && mouseX <= (control.getX() + control.getSize().getWidth());
-            boolean inY = (control.getY() <= mouseY) && mouseY <= (control.getY() + control.getSize().getHeight());
+            int controlX = control.getX() + xStart;
+            int controlY = control.getY() + yStart;
+
+            boolean inX = (controlX <= mouseX) && mouseX <= (controlX + control.getSize().getWidth());
+            boolean inY = (controlY <= mouseY) && mouseY <= (controlY + control.getSize().getHeight());
 
             if (inX && inY) {
                 GuiEvent event = new GuiEvent(control, this, mouseX - control.getX(), mouseY - control.getY());
                 control.onClicked(event);
             }
         }
+    }
+
+    protected void setSize(int x, int y) {
+        this.xSize = x;
+        this.ySize = y;
+    }
+
+    protected void setPadding(int x, int y) {
+        this.xPadding = x;
+        this.yPadding = y;
     }
 
     public void add(Control control) {

@@ -9,12 +9,13 @@ import net.cazzar.mods.minecraftframe.client.listener.IListener;
  * Created by Cayde on 6/12/2014.
  */
 public class ExampleGUI extends GuiBase {
-    private final Button control = new Button("Example button");
+    private final Button control = new Button("btn");
 
     public ExampleGUI() {
 
+        setSize(100, 100);
         add(control);
-        control.setPostition(20, 20);
+        control.setPosition(20, 20);
         control.addListener(new IListener() {
             @Override
             public void onClicked(GuiEvent e) {
