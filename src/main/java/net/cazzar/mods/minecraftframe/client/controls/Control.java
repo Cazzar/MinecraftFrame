@@ -6,6 +6,7 @@ import net.cazzar.mods.minecraftframe.client.listener.GuiEvent;
 import net.cazzar.mods.minecraftframe.client.listener.IListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.util.ResourceLocation;
 
@@ -72,5 +73,9 @@ public abstract class Control {
 
     protected void playClickSound() {
         Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+    }
+
+    protected FontRenderer getFontRenderer() {
+        return Minecraft.getMinecraft().fontRenderer;
     }
 }
