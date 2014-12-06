@@ -1,10 +1,11 @@
 package net.cazzar.mods.minecraftframe.client.controls;
 
-import net.cazzar.mods.minecraftframe.client.GLUtil;
+import org.lwjgl.input.Mouse;
 
 import java.awt.*;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
 
 /**
  * Created by Cayde on 6/12/2014.
@@ -13,7 +14,7 @@ public class Button extends Control {
     String message;
 
     public Button(String message) {
-        this.message = message;
+        setMessage(message, true); // auto resizing
     }
 
     public String getMessage() {
@@ -23,41 +24,37 @@ public class Button extends Control {
     public void setMessage(String message, boolean resize) {
         this.message = message;
         if (resize) {
-            int width = getFontRenderer().getStringWidth(message) + 20; //+20 for padding, since we are fairly constrained.
-            int height = getFontRenderer().FONT_HEIGHT + 20; // same here again.
+            int width = getFontRenderer().getStringWidth(message) + 10; //+10 for padding, since we are fairly constrained.
+            int height = getFontRenderer().FONT_HEIGHT + 10; // same here again.
 
             this.setSize(new Dimension(width, height));
         }
     }
 
     @Override
-    public void render() {
-        glBegin(GL_QUADS);
+    public void render(int mouseX, int mouseY) {
         glPushMatrix();
 
-        GLUtil.glColorAWT(Color.BLACK);
+        drawRect(0, 0, getSize().width, getSize().height, Color.black.getRGB());
+        Color inner = Color.darkGray;
 
-        glVertex2i(0, 0);
-        glVertex2i(getSize().width, 0);
-        glVertex2i(getSize().width, getSize().height);
-        glVertex2i(0, getSize().height);
+        boolean inX = (this.getX() <= mouseX) && mouseX <= (this.getX() + this.getSize().getWidth());
+        boolean inY = (this.getY() <= mouseY) && mouseY <= (this.getY() + this.getSize().getHeight());
 
-        GLUtil.glColorAWT(Color.DARK_GRAY); // Probably will replace this with a tile-able texture. or even a 64*64 one.
+        if (inX && inY) {
+            inner = Mouse.isButtonDown(0) ? Color.cyan : Color.red;
+        }
 
-        glVertex2i(5, 5);
-        glVertex2i(getSize().width - 5, 5);
-        glVertex2i(getSize().width - 5, getSize().height - 5);
-        glVertex2i(5, getSize().height - 5);
+        drawRect(2, 2, getSize().width - 2, getSize().height - 2, inner.getRGB());
 
         drawCentredString(message, this.getSize().width / 2, this.getSize().height / 2);
 
         glPopMatrix();
-        glEnd();
     }
 
     protected void drawCentredString(String str, int x, int y) {
         int nX = x - (getFontRenderer().getStringWidth(str) / 2);
-        int nY = y + getFontRenderer().FONT_HEIGHT / 2; // mono height fonts.
+        int nY = y - getFontRenderer().FONT_HEIGHT / 2; // mono height fonts.
 
         getFontRenderer().drawStringWithShadow(str, nX, nY, -1); //draw the white string
     }
