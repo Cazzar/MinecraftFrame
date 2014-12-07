@@ -62,6 +62,22 @@ public abstract class Control {
         GL11.glDisable(GL11.GL_BLEND);
     }
 
+    @SuppressWarnings("PointlessArithmeticExpression")
+    public void drawTexturedRect(ResourceLocation texture, int x, int y, int w, int h, int u, int v) {
+        ResourceLocation textureLocation = new ResourceLocation(texture.getResourceDomain(), "textures/gui/" + texture.getResourcePath());
+
+        Minecraft.getMinecraft().renderEngine.bindTexture(textureLocation);
+        float f = 0.00390625F;
+        float f1 = 0.00390625F;
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV((double) (x + 0), (double) (y + v), 0, (double) ((float) (w + 0) * f), (double) ((float) (h + v) * f1));
+        tessellator.addVertexWithUV((double) (x + u), (double) (y + v), 0, (double) ((float) (w + u) * f), (double) ((float) (h + v) * f1));
+        tessellator.addVertexWithUV((double) (x + u), (double) (y + 0), 0, (double) ((float) (w + u) * f), (double) ((float) (h + 0) * f1));
+        tessellator.addVertexWithUV((double) (x + 0), (double) (y + 0), 0, (double) ((float) (w + 0) * f), (double) ((float) (h + 0) * f1));
+        tessellator.draw();
+    }
+
     public Gui getParent() {
         return parent;
     }
@@ -73,6 +89,7 @@ public abstract class Control {
     /**
      * This should handle all rendering of each control,
      * assuming translation is already done by the system.
+     *
      * @param mouseX the mouse position in relative to the top right hand corner of the GUI
      * @param mouseY the mouse position in relative to the top right hand corner of the GUI
      */

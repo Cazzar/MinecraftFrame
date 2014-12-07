@@ -14,8 +14,8 @@ public class ExampleGUI extends GuiBase {
     public ExampleGUI() {
 
         setSize(100, 100);
+        setPadding(10, 10);
         add(control);
-        control.setPosition(20, 20);
         control.addListener(new IListener() {
             @Override
             public void onClicked(GuiEvent e) {

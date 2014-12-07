@@ -49,7 +49,7 @@ public class GuiBase extends GuiScreen {
             GL11.glPushMatrix();
             //since we can be a little safer if we push and pop ourselves.
             GL11.glTranslated(control.getX(), control.getY(), 0);
-            control.render(mouseX - xStart, mouseY - yStart);
+            control.render(mouseX - xStart - xPadding, mouseY - yStart - xPadding);
             GL11.glPopMatrix();
         }
 
@@ -65,8 +65,8 @@ public class GuiBase extends GuiScreen {
 
         for (Control control : controls) {
             //Since we dont want to send unnecessary function calls.
-            int controlX = control.getX() + xStart;
-            int controlY = control.getY() + yStart;
+            int controlX = control.getX() + xStart + xPadding;
+            int controlY = control.getY() + yStart + xPadding;
 
             boolean inX = (controlX <= mouseX) && mouseX <= (controlX + control.getSize().getWidth());
             boolean inY = (controlY <= mouseY) && mouseY <= (controlY + control.getSize().getHeight());
