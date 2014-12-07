@@ -26,10 +26,6 @@ minecraft {
     runDir = ".run"
 }
 
-dependencies {
-    // you may put jars on which you depend on in ./libs
-}
-
 processResources {
     // this will ensure that this task is redone when the versions change.
     inputs.property "version", project.version
@@ -48,3 +44,11 @@ processResources {
         exclude 'mcmod.info'
     }
 }
+
+//because IDEA
+sourceSets {
+    main {
+        output.resourcesDir = output.classesDir
+    }
+}
+
