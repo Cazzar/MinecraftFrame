@@ -68,7 +68,12 @@ public abstract class Control {
     public void drawTexturedRect(ResourceLocation texture, int x, int y, int u, int v, int w, int h) {
         ResourceLocation textureLocation = new ResourceLocation(texture.getResourceDomain(), "textures/gui/" + texture.getResourcePath());
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(textureLocation);
+        drawTexturedRectAbs(textureLocation, x, y, u, v, w, h);
+    }
+
+    @SuppressWarnings("PointlessArithmeticExpression")
+    public void drawTexturedRectAbs(ResourceLocation texture, int x, int y, int u, int v, int w, int h) {
+        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
         float f = 0.00390625F;
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.instance;
