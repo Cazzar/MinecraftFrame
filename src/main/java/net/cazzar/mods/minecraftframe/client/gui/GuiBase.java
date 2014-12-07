@@ -41,11 +41,15 @@ public class GuiBase extends GuiScreen {
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
+        GL11.glColor3f(1, 1, 1); //seriously, fuck you minecraft.
+
         GL11.glPushMatrix();
 
         GL11.glTranslated(xStart + xPadding, yStart + yPadding, 0);
 
         for (Control control : controls) {
+            if (!control.isVisible()) continue;
+
             GL11.glPushMatrix();
             //since we can be a little safer if we push and pop ourselves.
             GL11.glTranslated(control.getX(), control.getY(), 0);
@@ -57,13 +61,15 @@ public class GuiBase extends GuiScreen {
     }
 
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        //we do not need to recalculate for every control
         final int xStart = (width - xSize) / 2;
         final int yStart = (height - ySize) / 2;
-        //we do not need to recalculate for every control
 
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
         for (Control control : controls) {
+            if (!control.isVisible() || !control.isEnabled()) continue; //ignore it if it is disabled
+
             //Since we dont want to send unnecessary function calls.
             int controlX = control.getX() + xStart + xPadding;
             int controlY = control.getY() + yStart + xPadding;
@@ -76,6 +82,10 @@ public class GuiBase extends GuiScreen {
                 control.onClicked(event);
             }
         }
+    }
+
+    protected void onClick(GuiEvent event) {
+
     }
 
     protected void setSize(int x, int y) {

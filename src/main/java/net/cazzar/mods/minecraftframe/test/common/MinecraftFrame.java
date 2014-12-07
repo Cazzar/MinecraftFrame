@@ -1,4 +1,4 @@
-package net.cazzar.mods.minecraftframe.common;
+package net.cazzar.mods.minecraftframe.test.common;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

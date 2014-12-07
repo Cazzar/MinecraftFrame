@@ -23,8 +23,9 @@ public abstract class Control {
     List<IListener> listeners = Lists.newLinkedList();
     int x, y;
     Dimension size;
-    boolean enabled;
+    boolean enabled = true;
     Gui parent;
+    private boolean visible = true;
 
     protected static void drawRect(int x, int y, int w, int h, int color) {
         if (x < w) {
@@ -57,13 +58,14 @@ public abstract class Control {
         tessellator.addVertex((double) w, (double) y, 0.0D);
         tessellator.addVertex((double) x, (double) y, 0.0D);
         tessellator.draw();
+        GL11.glColor4f(1, 1, 1, 1); //vanilla fix, this may seem useless, but it saves redundant, annoying code later.
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
     }
 
     @SuppressWarnings("PointlessArithmeticExpression")
-    public void drawTexturedRect(ResourceLocation texture, int x, int y, int w, int h, int u, int v) {
+    public void drawTexturedRect(ResourceLocation texture, int x, int y, int u, int v, int w, int h) {
         ResourceLocation textureLocation = new ResourceLocation(texture.getResourceDomain(), "textures/gui/" + texture.getResourcePath());
 
         Minecraft.getMinecraft().renderEngine.bindTexture(textureLocation);
@@ -71,10 +73,10 @@ public abstract class Control {
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
-        tessellator.addVertexWithUV((double) (x + 0), (double) (y + v), 0, (double) ((float) (w + 0) * f), (double) ((float) (h + v) * f1));
-        tessellator.addVertexWithUV((double) (x + u), (double) (y + v), 0, (double) ((float) (w + u) * f), (double) ((float) (h + v) * f1));
-        tessellator.addVertexWithUV((double) (x + u), (double) (y + 0), 0, (double) ((float) (w + u) * f), (double) ((float) (h + 0) * f1));
-        tessellator.addVertexWithUV((double) (x + 0), (double) (y + 0), 0, (double) ((float) (w + 0) * f), (double) ((float) (h + 0) * f1));
+        tessellator.addVertexWithUV((double) (x + 0), (double) (y + h), 0, (double) ((float) (u + 0) * f), (double) ((float) (v + h) * f1));
+        tessellator.addVertexWithUV((double) (x + w), (double) (y + h), 0, (double) ((float) (u + w) * f), (double) ((float) (v + h) * f1));
+        tessellator.addVertexWithUV((double) (x + w), (double) (y + 0), 0, (double) ((float) (u + w) * f), (double) ((float) (v + 0) * f1));
+        tessellator.addVertexWithUV((double) (x + 0), (double) (y + 0), 0, (double) ((float) (u + 0) * f), (double) ((float) (v + 0) * f1));
         tessellator.draw();
     }
 
@@ -95,6 +97,13 @@ public abstract class Control {
      */
     public abstract void render(int mouseX, int mouseY);
 
+    protected boolean isHovered(int mouseX, int mouseY) {
+        boolean inX = (this.getX() <= mouseX) && mouseX <= (this.getX() + this.getSize().getWidth());
+        boolean inY = (this.getY() <= mouseY) && mouseY <= (this.getY() + this.getSize().getHeight());
+
+        return inX && inY;
+    }
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
@@ -105,6 +114,10 @@ public abstract class Control {
 
     public void setSize(Dimension size) {
         this.size = size;
+    }
+
+    public void setSize(int w, int h) { // this is a helper, but
+        setSize(new Dimension(w, h));
     }
 
     public void setPosition(int x, int y) {
@@ -135,5 +148,17 @@ public abstract class Control {
 
     protected FontRenderer getFontRenderer() {
         return Minecraft.getMinecraft().fontRenderer;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 }

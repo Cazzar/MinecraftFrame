@@ -1,16 +1,16 @@
 package net.cazzar.mods.minecraftframe.client.controls;
 
-import org.lwjgl.input.Mouse;
+import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created by Cayde on 6/12/2014.
  */
 public class Button extends Control {
+    private static final ResourceLocation texture = new ResourceLocation("minecraftframe", "buttons.png");
     String message;
 
     public Button(String message) {
@@ -36,26 +36,41 @@ public class Button extends Control {
         glPushMatrix();
 
         drawRect(0, 0, getSize().width, getSize().height, Color.black.getRGB());
-        Color inner = Color.darkGray;
+        glColor3d(1, 1, 1); //Like, I am disliking the tesselator for this, it really should RESET ITS OWN COLOUR!
+//        Color inner = Color.darkGray;
 
-        boolean inX = (this.getX() <= mouseX) && mouseX <= (this.getX() + this.getSize().getWidth());
-        boolean inY = (this.getY() <= mouseY) && mouseY <= (this.getY() + this.getSize().getHeight());
+        int u = 0, v = 0;
 
-        if (inX && inY) {
-            inner = Mouse.isButtonDown(0) ? Color.cyan : Color.red;
+        boolean renderBorder = isEnabled();
+
+        if (isEnabled()) {
+            if (isHovered(mouseX, mouseY)) v = 128;
+            else u = 128;
         }
 
-        drawRect(2, 2, getSize().width - 2, getSize().height - 2, inner.getRGB());
+        drawTexturedRect(texture, 1, 1, u, v, getSize().width - 2, getSize().height - 2);
 
-        drawCentredString(message, this.getSize().width / 2, this.getSize().height / 2);
+        drawRect(1, 1, getSize().width - 1, 2, 0x50FFFFFF); //ARGB!
+        drawRect(1, 2, 2, getSize().height - 1, 0x50FFFFFF);
+        drawRect(1, getSize().height - 3, getSize().width - 1, getSize().height - 1, 0x50303030);
+        drawRect(getSize().width - 2, 1, getSize().width - 1, getSize().height - 2,  0x50303030);
+
+        int stringColor = 0xe0e0e0; //vanilla, using hex literals so I can read the RGB
+        if (!isEnabled()) {
+          stringColor = 0xa0a0a0;
+        } else if (isHovered(mouseX, mouseY)) {
+            stringColor = 0xffffa0;
+        }
+
+        drawCentredString(message, this.getSize().width / 2, this.getSize().height / 2, stringColor);
 
         glPopMatrix();
     }
 
-    protected void drawCentredString(String str, int x, int y) {
+    protected void drawCentredString(String str, int x, int y, int color) {
         int nX = x - (getFontRenderer().getStringWidth(str) / 2);
         int nY = y - getFontRenderer().FONT_HEIGHT / 2; // mono height fonts.
 
-        getFontRenderer().drawStringWithShadow(str, nX, nY, -1); //draw the white string
+        getFontRenderer().drawStringWithShadow(str, nX, nY, color); //draw the white string
     }
 }

@@ -1,4 +1,4 @@
-package net.cazzar.mods.minecraftframe.common;
+package net.cazzar.mods.minecraftframe.test.common;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
