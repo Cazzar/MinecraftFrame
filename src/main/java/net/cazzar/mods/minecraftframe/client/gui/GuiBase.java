@@ -1,11 +1,7 @@
 package net.cazzar.mods.minecraftframe.client.gui;
 
-import com.google.common.collect.Lists;
 import net.cazzar.mods.minecraftframe.client.controls.Control;
-import net.cazzar.mods.minecraftframe.client.listener.GuiEvent;
 import net.minecraft.client.gui.GuiScreen;
-
-import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -13,6 +9,7 @@ import static org.lwjgl.opengl.GL11.*;
  * Created by Cayde on 6/12/2014.
  */
 public class GuiBase extends GuiScreen {
+    private ContentPane contentPane = new ContentPane();
     protected int xSize = 0;
     protected int ySize = 0;
     protected int xPadding = 0;
@@ -20,11 +17,15 @@ public class GuiBase extends GuiScreen {
 
     private int rgb = -1;
 
-    List<Control> controls = Lists.newLinkedList();
+//    List<Control> controls = Lists.newLinkedList();
     private boolean pauses = false;
 
     public void setPauses() {
         pauses = true;
+    }
+
+    public ContentPane getContentPane() {
+        return contentPane;
     }
 
     @Override
@@ -46,18 +47,8 @@ public class GuiBase extends GuiScreen {
 
         glPushMatrix();
 
-        glTranslated(xStart + xPadding, yStart + yPadding, 0);
-
-        for (Control control : controls) {
-            if (!control.isVisible()) continue;
-
-            glPushMatrix();
-            //since we can be a little safer if we push and pop ourselves.
-            glTranslated(control.getX(), control.getY(), 0);
-            glColor4f(1, 1, 1, 1);
-            control.render(mouseX - xStart - xPadding, mouseY - yStart - xPadding);
-            glPopMatrix();
-        }
+        glTranslatef(xStart + xPadding, yStart + yPadding, 0);
+        getContentPane().render(mouseX - xStart - xPadding, mouseY - yStart - yPadding);
 
         glPopMatrix();
     }
@@ -69,25 +60,9 @@ public class GuiBase extends GuiScreen {
 
         super.mouseClicked(mouseX, mouseY, mouseButton);
 
-        for (Control control : controls) {
-            if (!control.isVisible() || !control.isEnabled()) continue; //ignore it if it is disabled
+        System.out.println(mouseY - yStart);
 
-            //Since we dont want to send unnecessary function calls.
-            int controlX = control.getX() + xStart + xPadding;
-            int controlY = control.getY() + yStart + xPadding;
-
-            boolean inX = (controlX <= mouseX) && mouseX <= (controlX + control.getSize().getWidth());
-            boolean inY = (controlY <= mouseY) && mouseY <= (controlY + control.getSize().getHeight());
-
-            if (inX && inY) {
-                GuiEvent event = new GuiEvent(control, this, mouseX - control.getX(), mouseY - control.getY());
-                control.onClicked(event);
-            }
-        }
-    }
-
-    protected void onClick(GuiEvent event) {
-
+        getContentPane().mouseClicked(mouseX - xStart - xPadding, mouseY - yStart - yPadding, mouseButton);
     }
 
     protected void setSize(int x, int y) {
@@ -101,7 +76,7 @@ public class GuiBase extends GuiScreen {
     }
 
     public void add(Control control) {
-        controls.add(control);
-        control.setParent(this);
+        getContentPane().controls.add(control);
+        control.setParent(getContentPane());
     }
 }
