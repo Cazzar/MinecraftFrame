@@ -4,9 +4,10 @@ import com.google.common.collect.Lists;
 import net.cazzar.mods.minecraftframe.client.controls.Control;
 import net.cazzar.mods.minecraftframe.client.listener.GuiEvent;
 import net.minecraft.client.gui.GuiScreen;
-import org.lwjgl.opengl.GL11;
 
 import java.util.List;
+
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created by Cayde on 6/12/2014.
@@ -41,23 +42,24 @@ public class GuiBase extends GuiScreen {
 
         super.drawScreen(mouseX, mouseY, partialTicks);
 
-        GL11.glColor3f(1, 1, 1); //seriously, fuck you minecraft.
+        glColor4f(1, 1, 1, 1); //seriously, fuck you minecraft.
 
-        GL11.glPushMatrix();
+        glPushMatrix();
 
-        GL11.glTranslated(xStart + xPadding, yStart + yPadding, 0);
+        glTranslated(xStart + xPadding, yStart + yPadding, 0);
 
         for (Control control : controls) {
             if (!control.isVisible()) continue;
 
-            GL11.glPushMatrix();
+            glPushMatrix();
             //since we can be a little safer if we push and pop ourselves.
-            GL11.glTranslated(control.getX(), control.getY(), 0);
+            glTranslated(control.getX(), control.getY(), 0);
+            glColor4f(1, 1, 1, 1);
             control.render(mouseX - xStart - xPadding, mouseY - yStart - xPadding);
-            GL11.glPopMatrix();
+            glPopMatrix();
         }
 
-        GL11.glPopMatrix();
+        glPopMatrix();
     }
 
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {

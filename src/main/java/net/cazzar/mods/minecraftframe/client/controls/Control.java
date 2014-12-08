@@ -58,7 +58,6 @@ public abstract class Control {
         tessellator.addVertex((double) w, (double) y, 0.0D);
         tessellator.addVertex((double) x, (double) y, 0.0D);
         tessellator.draw();
-        GL11.glColor4f(1, 1, 1, 1); //vanilla fix, this may seem useless, but it saves redundant, annoying code later.
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
