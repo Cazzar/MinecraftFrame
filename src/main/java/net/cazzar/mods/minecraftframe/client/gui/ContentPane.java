@@ -14,8 +14,13 @@ import static org.lwjgl.opengl.GL11.*;
 public class ContentPane extends Control {
     protected int xPadding = 0;
     protected int yPadding = 0;
-
     protected List<Control> controls = Lists.newArrayList();
+    GuiBase parent;
+    private ILayoutManager layoutManager = null;
+
+    public ContentPane(GuiBase parent) {
+        this.parent = parent;
+    }
 
     @Override
     public void render(int mouseX, int mouseY) {
@@ -54,6 +59,38 @@ public class ContentPane extends Control {
                 GuiEvent event = new GuiEvent(control, this, mouseX - control.getX(), mouseY - control.getY(), mouseButton);
                 control.onClicked(event);
             }
+        }
+    }
+
+    public GuiBase getParentGui() {
+        return parent;
+    }
+
+    public void add(Control control) {
+        controls.add(control);
+        control.setParent(this);
+        if (layoutManager != null) {
+            layoutManager.addControl(control);
+            layoutManager.layoutContainer();
+            getParentGui().setSize(layoutManager.getSize());
+        }
+    }
+
+    public int getControlCount() {
+        return controls.size();
+    }
+
+    public Control getControl(int i) {
+        return controls.get(i);
+    }
+
+    public void remove(Control control) {
+        control.setParent(null);
+        controls.remove(control);
+        if (layoutManager != null) {
+            layoutManager.removeControl(control);
+            layoutManager.layoutContainer();
+            getParent().setSize(layoutManager.getSize());
         }
     }
 }

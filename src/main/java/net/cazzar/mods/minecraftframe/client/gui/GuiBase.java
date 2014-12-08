@@ -9,7 +9,7 @@ import static org.lwjgl.opengl.GL11.*;
  * Created by Cayde on 6/12/2014.
  */
 public class GuiBase extends GuiScreen {
-    private ContentPane contentPane = new ContentPane();
+    private ContentPane contentPane = new ContentPane(this);
     protected int xSize = 0;
     protected int ySize = 0;
     protected int xPadding = 0;
@@ -26,11 +26,6 @@ public class GuiBase extends GuiScreen {
 
     public ContentPane getContentPane() {
         return contentPane;
-    }
-
-    @Override
-    public boolean doesGuiPauseGame() {
-        return pauses;
     }
 
     @Override
@@ -68,6 +63,10 @@ public class GuiBase extends GuiScreen {
     protected void setSize(int x, int y) {
         this.xSize = x;
         this.ySize = y;
+    }
+
+    protected void setSize(java.awt.Dimension size) {
+        setSize(size.width, size.height);
     }
 
     protected void setPadding(int x, int y) {
