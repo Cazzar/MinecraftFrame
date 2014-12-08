@@ -11,14 +11,12 @@ public class GuiEvent {
     private final ContentPane parent;
     private final int x;
     private final int y;
-    private final int mouseButton;
 
-    public GuiEvent(Control source, ContentPane parent, int x, int y, int mouseButton) {
+    public GuiEvent(Control source, ContentPane parent, int x, int y) {
         this.source = source;
         this.parent = parent;
         this.x = x;
         this.y = y;
-        this.mouseButton = mouseButton;
     }
 
     public Control getSource() {
@@ -37,7 +35,22 @@ public class GuiEvent {
         return y;
     }
 
-    public int getMouseButton() {
-        return mouseButton;
+    public static class Click extends GuiEvent {
+        private final int mouseButton;
+
+        public Click(Control source, ContentPane parent, int x, int y, int mouseButton) {
+            super(source, parent, x, y);
+            this.mouseButton = mouseButton;
+        }
+
+        public int getMouseButton() {
+            return mouseButton;
+        }
+    }
+
+    public static class Hover extends GuiEvent {
+        public Hover(Control source, ContentPane parent, int x, int y) {
+            super(source, parent, x, y);
+        }
     }
 }

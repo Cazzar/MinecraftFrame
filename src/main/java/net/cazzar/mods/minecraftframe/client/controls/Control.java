@@ -100,7 +100,7 @@ public abstract class Control {
      */
     public abstract void render(int mouseX, int mouseY);
 
-    protected boolean isHovered(int mouseX, int mouseY) {
+    public boolean isHovered(int mouseX, int mouseY) {
         boolean inX = (this.getX() <= mouseX) && mouseX <= (this.getX() + this.getSize().getWidth());
         boolean inY = (this.getY() <= mouseY) && mouseY <= (this.getY() + this.getSize().getHeight());
 
@@ -141,8 +141,12 @@ public abstract class Control {
     }
 
     public void onClicked(GuiEvent event) {
-        for (IListener listener : listeners) listener.onClicked(event);
+        postEvent(event);
         playClickSound();
+    }
+
+    public void postEvent(GuiEvent event) {
+        for (IListener listener : listeners) listener.onClicked(event);
     }
 
     protected void playClickSound() {

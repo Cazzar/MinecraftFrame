@@ -34,6 +34,9 @@ public class ContentPane extends Control {
             glTranslated(control.getX(), control.getY(), 0);
             glColor4f(1, 1, 1, 1);
 
+            if (control.isHovered(mouseX, mouseY))
+                control.postEvent(new GuiEvent.Hover(control, this, mouseX - control.getX(), mouseY - control.getY()));
+
             control.render(mouseX - xPadding, mouseY - xPadding);
             glPopMatrix();
         }
@@ -56,7 +59,7 @@ public class ContentPane extends Control {
             boolean inY = (controlY <= mouseY) && mouseY <= (controlY + control.getSize().getHeight());
 
             if (inX && inY) {
-                GuiEvent event = new GuiEvent(control, this, mouseX - control.getX(), mouseY - control.getY(), mouseButton);
+                GuiEvent event = new GuiEvent.Click(control, this, mouseX - control.getX(), mouseY - control.getY(), mouseButton);
                 control.onClicked(event);
             }
         }
