@@ -24,6 +24,11 @@ public class GuiBase extends GuiScreen {
         pauses = true;
     }
 
+    @Override
+    public boolean doesGuiPauseGame() {
+        return pauses;
+    }
+
     public ContentPane getContentPane() {
         return contentPane;
     }
@@ -54,8 +59,6 @@ public class GuiBase extends GuiScreen {
         final int yStart = (height - ySize) / 2;
 
         super.mouseClicked(mouseX, mouseY, mouseButton);
-
-        System.out.println(mouseY - yStart);
 
         getContentPane().mouseClicked(mouseX - xStart - xPadding, mouseY - yStart - yPadding, mouseButton);
     }
