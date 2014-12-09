@@ -7,7 +7,6 @@ import net.cazzar.mods.minecraftframe.client.listener.IListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
@@ -24,7 +23,7 @@ public abstract class Control {
     int x, y;
     Dimension size;
     boolean enabled = true;
-    Gui parent;
+    Control parent;
     private boolean visible = true;
 
     protected static void drawRect(int x, int y, int w, int h, int color) {
@@ -84,11 +83,11 @@ public abstract class Control {
         tessellator.draw();
     }
 
-    public Gui getParent() {
+    public Control getParent() {
         return parent;
     }
 
-    public void setParent(Gui parent) {
+    public void setParent(Control parent) {
         this.parent = parent;
     }
 
@@ -101,7 +100,7 @@ public abstract class Control {
      */
     public abstract void render(int mouseX, int mouseY);
 
-    protected boolean isHovered(int mouseX, int mouseY) {
+    public boolean isHovered(int mouseX, int mouseY) {
         boolean inX = (this.getX() <= mouseX) && mouseX <= (this.getX() + this.getSize().getWidth());
         boolean inY = (this.getY() <= mouseY) && mouseY <= (this.getY() + this.getSize().getHeight());
 
@@ -142,8 +141,12 @@ public abstract class Control {
     }
 
     public void onClicked(GuiEvent event) {
-        for (IListener listener : listeners) listener.onClicked(event);
+        postEvent(event);
         playClickSound();
+    }
+
+    public void postEvent(GuiEvent event) {
+        for (IListener listener : listeners) listener.onClicked(event);
     }
 
     protected void playClickSound() {
