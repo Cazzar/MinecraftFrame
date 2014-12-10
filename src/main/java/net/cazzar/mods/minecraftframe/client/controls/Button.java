@@ -50,12 +50,14 @@ public class Button extends Control {
             else u = 128;
         }
 
-        drawTexturedRect(texture, 1, 1, u, v, getSize().width - 2, getSize().height - 2);
+        drawTexturedRect(texture, 1, 1, u, v, getSize().width - 2, getSize().height - 2, 128, 128);
 
-        drawRect(1, 1, getSize().width - 1, 2, 0x50FFFFFF); //ARGB!
-        drawRect(1, 2, 2, getSize().height - 1, 0x50FFFFFF);
-        drawRect(1, getSize().height - 3, getSize().width - 1, getSize().height - 1, 0x50303030);
-        drawRect(getSize().width - 2, 1, getSize().width - 1, getSize().height - 2,  0x50303030);
+        if (renderBorder) {
+            drawRect(1, 1, getSize().width - 1, 2, 0x50FFFFFF); //ARGB!
+            drawRect(1, 2, 2, getSize().height - 1, 0x50FFFFFF);
+            drawRect(1, getSize().height - 3, getSize().width - 1, getSize().height - 1, 0x50303030);
+            drawRect(getSize().width - 2, 1, getSize().width - 1, getSize().height - 2, 0x50303030);
+        }
 
         int stringColor = 0xe0e0e0; //vanilla, using hex literals so I can read the RGB
         if (!isEnabled()) {

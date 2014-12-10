@@ -62,7 +62,6 @@ public abstract class Control {
         GL11.glDisable(GL11.GL_BLEND);
     }
 
-    @SuppressWarnings("PointlessArithmeticExpression")
     public void drawTexturedRect(ResourceLocation texture, int x, int y, int u, int v, int w, int h) {
         ResourceLocation textureLocation = new ResourceLocation(texture.getResourceDomain(), "textures/gui/" + texture.getResourcePath());
 
@@ -81,6 +80,24 @@ public abstract class Control {
         tessellator.addVertexWithUV((double) (x + w), (double) (y + 0), 0, (double) ((float) (u + w) * f), (double) ((float) (v + 0) * f1));
         tessellator.addVertexWithUV((double) (x + 0), (double) (y + 0), 0, (double) ((float) (u + 0) * f), (double) ((float) (v + 0) * f1));
         tessellator.draw();
+    }
+
+    public void drawTexturedRectAbs(ResourceLocation texture, int x, int y, int u, int v, int w, int h, int uMax, int vMax) {
+        //U V
+        //X Y
+        //W H
+
+        for (int x1 = x; x1 < (x + w); x1 += uMax ) {
+            for (int y1 = y; y1 < (y + h); y1 += vMax) {
+                drawTexturedRectAbs(texture, x1, y1, u, v, Math.min(w - x1, uMax), Math.min(h - y1, vMax));
+            }
+        }
+    }
+
+    public void drawTexturedRect(ResourceLocation texture, int x, int y, int u, int v, int w, int h, int uMax, int vMax) {
+        ResourceLocation textureLocation = new ResourceLocation(texture.getResourceDomain(), "textures/gui/" + texture.getResourcePath());
+
+        drawTexturedRectAbs(textureLocation, x, y, u, v, w, h, uMax, vMax);
     }
 
     public Control getParent() {
