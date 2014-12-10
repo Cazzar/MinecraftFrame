@@ -10,6 +10,6 @@ import java.awt.*;
 public interface ILayoutManager {
     void addControl(Control control);
     void removeControl(Control control);
-    void layoutContainer();
-    Dimension getSize(); // since we are not resizable.
+    void layoutContainer(ContentPane parent);
+    Dimension getSize(ContentPane parent); // since we are not resizable.
 }

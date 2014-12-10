@@ -23,12 +23,14 @@ public class Button extends Control {
 
     public void setMessage(String message, boolean resize) {
         this.message = message;
-        if (resize) {
-            int width = getFontRenderer().getStringWidth(message) + 10; //+10 for padding, since we are fairly constrained.
-            int height = getFontRenderer().FONT_HEIGHT + 10; // same here again.
+        if (resize) compact();
+    }
 
-            this.setSize(new Dimension(width, height));
-        }
+    public void compact() {
+        int width = getFontRenderer().getStringWidth(message) + 10; //+10 for padding, since we are fairly constrained.
+        int height = getFontRenderer().FONT_HEIGHT + 10; // same here again.
+
+        this.setSize(new Dimension(width, height));
     }
 
     @Override

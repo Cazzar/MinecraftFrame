@@ -78,7 +78,11 @@ public class GuiBase extends GuiScreen {
     }
 
     public void add(Control control) {
-        getContentPane().controls.add(control);
+        getContentPane().add(control);
         control.setParent(getContentPane());
+    }
+
+    public void pack() {
+        getContentPane().pack();
     }
 }

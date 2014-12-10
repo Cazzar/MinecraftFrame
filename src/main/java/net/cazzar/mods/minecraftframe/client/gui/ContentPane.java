@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.cazzar.mods.minecraftframe.client.controls.Control;
 import net.cazzar.mods.minecraftframe.client.listener.GuiEvent;
 
+import java.awt.*;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -16,10 +17,35 @@ public class ContentPane extends Control {
     protected int yPadding = 0;
     protected List<Control> controls = Lists.newArrayList();
     GuiBase parent;
+
+    public ILayoutManager getLayoutManager() {
+        return layoutManager;
+    }
+
+    public void setLayoutManager(ILayoutManager layoutManager) {
+        this.layoutManager = layoutManager;
+    }
+
     private ILayoutManager layoutManager = null;
 
     public ContentPane(GuiBase parent) {
         this.parent = parent;
+    }
+
+    public int getXPadding() {
+        return xPadding;
+    }
+
+    public void setxPadding(int xPadding) {
+        this.xPadding = xPadding;
+    }
+
+    public int getYPadding() {
+        return yPadding;
+    }
+
+    public void setyPadding(int yPadding) {
+        this.yPadding = yPadding;
     }
 
     @Override
@@ -74,8 +100,6 @@ public class ContentPane extends Control {
         control.setParent(this);
         if (layoutManager != null) {
             layoutManager.addControl(control);
-            layoutManager.layoutContainer();
-            getParentGui().setSize(layoutManager.getSize());
         }
     }
 
@@ -92,8 +116,28 @@ public class ContentPane extends Control {
         controls.remove(control);
         if (layoutManager != null) {
             layoutManager.removeControl(control);
-            layoutManager.layoutContainer();
-            getParent().setSize(layoutManager.getSize());
+        }
+    }
+
+    @Override
+    public Dimension getSize() {
+        if (super.getSize() == null && layoutManager != null) this.setSize(layoutManager.getSize(this));
+
+        return super.getSize();
+    }
+
+    public void pack() {
+        if (layoutManager != null) {
+            this.setSize(layoutManager.getSize(this));
+
+            layoutManager.layoutContainer(this);
+
+            if (getParentGui() != null) {
+                Dimension size = layoutManager.getSize(this);
+                size.height += getParentGui().xPadding * 2;
+                size.width += getParentGui().yPadding * 2;
+                getParentGui().setSize(size);
+            }
         }
     }
 }

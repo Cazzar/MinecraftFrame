@@ -146,7 +146,7 @@ public abstract class Control {
     }
 
     public void postEvent(GuiEvent event) {
-        for (IListener listener : listeners) listener.onClicked(event);
+        for (IListener listener : listeners) listener.onEvent(event);
     }
 
     protected void playClickSound() {

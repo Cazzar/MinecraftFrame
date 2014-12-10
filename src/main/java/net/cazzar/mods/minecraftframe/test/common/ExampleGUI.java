@@ -3,32 +3,28 @@ package net.cazzar.mods.minecraftframe.test.common;
 import net.cazzar.mods.minecraftframe.client.controls.Button;
 import net.cazzar.mods.minecraftframe.client.controls.ImageRender;
 import net.cazzar.mods.minecraftframe.client.gui.GuiBase;
-import net.cazzar.mods.minecraftframe.client.listener.GuiEvent;
-import net.cazzar.mods.minecraftframe.client.listener.IListener;
+import net.cazzar.mods.minecraftframe.client.gui.layout.GridLayout;
 import net.minecraft.util.ResourceLocation;
-
-import java.awt.*;
 
 /**
  * Created by Cayde on 6/12/2014.
  */
 public class ExampleGUI extends GuiBase {
-    private final Button control = new Button("btn");
+    private final Button control = new Button("OMGWTFBBQSAUCE!");
+    ImageRender img = new ImageRender(new ResourceLocation("minecraftframe:textures/gui/image.png"));
 
     public ExampleGUI() {
-        setSize(200, 100);
+//        setSize(200, 100);
+        getContentPane().setLayoutManager(new GridLayout(3, 3, 5, 5));
         setPadding(10, 10);
-        add(control);
-        control.addListener(new IListener() {
-            @Override
-            public void onClicked(GuiEvent e) {
-                e.getSource().setSize(new Dimension(40, 40));
-            }
-        });
+        addControls();
 
-        ImageRender img = new ImageRender(new ResourceLocation("minecraftframe:textures/gui/image.png"));
-        img.setPosition(30, 0);
-        img.setSize(80, 80);
-        add(img);
+        pack(); // call this to make pretty
+    }
+
+    public void addControls() {
+        for (int i = 0; i < 9; i ++) {
+            add(new Button("Button " + ((i == 4) ? "So, I can make this any? " : "") + (i + 1)));
+        }
     }
 }
