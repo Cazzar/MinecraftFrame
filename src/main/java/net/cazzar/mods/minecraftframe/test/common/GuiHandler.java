@@ -1,9 +1,10 @@
 package net.cazzar.mods.minecraftframe.test.common;
 
-import cpw.mods.fml.common.network.IGuiHandler;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.network.IGuiHandler;
 
 /**
  * Created by Cayde on 6/12/2014.

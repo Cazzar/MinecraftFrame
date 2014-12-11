@@ -1,0 +1,7 @@
+<root>
+  <item name='net.cazzar.mods.minecraftframe.client.controls.Control void drawTexturedRectAbs(net.minecraft.util.ResourceLocation, int, int, int, int, int, int)'>
+    <annotation name='java.lang.SuppressWarnings'>
+      <val val="&quot;PointlessArithmeticExpression&quot;"/>
+    </annotation>
+  </item>
+</root>

@@ -22,7 +22,8 @@ group= "net.cazzar.mods" // http://maven.apache.org/guides/mini/guide-naming-con
 archivesBaseName = "minecraftframe"
 
 minecraft {
-    version = "1.7.10-10.13.2.1240"
+    version = "1.8-11.14.0.1262-1.8"
+    mappings = 'snapshot_20141211'
     runDir = ".run"
 }
 

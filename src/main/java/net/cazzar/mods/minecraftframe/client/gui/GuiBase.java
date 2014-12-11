@@ -3,6 +3,8 @@ package net.cazzar.mods.minecraftframe.client.gui;
 import net.cazzar.mods.minecraftframe.client.controls.Control;
 import net.minecraft.client.gui.GuiScreen;
 
+import java.io.IOException;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -53,7 +55,7 @@ public class GuiBase extends GuiScreen {
         glPopMatrix();
     }
 
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         //we do not need to recalculate for every control
         final int xStart = (width - xSize) / 2;
         final int yStart = (height - ySize) / 2;
