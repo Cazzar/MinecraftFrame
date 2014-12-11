@@ -21,7 +21,7 @@ public class ExampleGUI extends GuiBase {
 
     public void addControls() {
         add(control);
-        img.setSize(200, 200);
+        img.setSize(100, 100);
         add(img);
         for (int i = 0; i < 7; i ++) {
             add(new Button("Button" + ((i == 4) ? ". BUTTON!? " : " ") + (i + 1)));

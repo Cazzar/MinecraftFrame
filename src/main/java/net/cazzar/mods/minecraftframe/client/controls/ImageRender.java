@@ -30,6 +30,7 @@ public class ImageRender extends Control {
 
     public void setUV(double u, double v) {
         if (u > 1 || v > 1) throw new IllegalArgumentException("U or V cannot be greater than 1!");
+        if (u < 0 || v < 0) throw new IllegalArgumentException("U or V cannot be less than 0!");
 
         this.uMin = u;
         this.vMin = v;
@@ -37,6 +38,7 @@ public class ImageRender extends Control {
 
     public void setUVMax(double u, double v) {
         if (u > 1 || v > 1) throw new IllegalArgumentException("U or V cannot be greater than 1!");
+        if (u < 0 || v < 0) throw new IllegalArgumentException("U or V cannot be less than 0!");
 
         this.uMax = u;
         this.vMax = v;
