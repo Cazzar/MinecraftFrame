@@ -10,6 +10,11 @@ import net.minecraft.util.ResourceLocation;
  */
 public class ImageRender extends Control {
     protected ResourceLocation image;
+    protected double uMin = 0;
+    protected double uMax = 1;
+    protected double vMin = 0;
+    protected double vMax = 1;
+
 
     public ImageRender(ResourceLocation image) {
         this.image = image;
@@ -21,6 +26,20 @@ public class ImageRender extends Control {
 
     public void setImage(ResourceLocation image) {
         this.image = image;
+    }
+
+    public void setUV(double u, double v) {
+        if (u > 1 || v > 1) throw new IllegalArgumentException("U or V cannot be greater than 1!");
+
+        this.uMin = u;
+        this.vMin = v;
+    }
+
+    public void setUVMax(double u, double v) {
+        if (u > 1 || v > 1) throw new IllegalArgumentException("U or V cannot be greater than 1!");
+
+        this.uMax = u;
+        this.vMax = v;
     }
 
     @Override
@@ -35,10 +54,10 @@ public class ImageRender extends Control {
         int w = getSize().width, h = getSize().height;
 
                              //X, Y, Z,   U, V
-        render.addVertexWithUV(0, h, 0,   0, 1);
-        render.addVertexWithUV(w, h, 0,   1, 1);
-        render.addVertexWithUV(w, 0, 0,   1, 0);
-        render.addVertexWithUV(0, 0, 0,   0, 0);
+        render.addVertexWithUV(0, h, 0,   uMin, vMax);
+        render.addVertexWithUV(w, h, 0,   uMax, vMax);
+        render.addVertexWithUV(w, 0, 0,   uMax, vMin);
+        render.addVertexWithUV(0, 0, 0,   uMax, vMax);
 
         tessellator.draw();
 
