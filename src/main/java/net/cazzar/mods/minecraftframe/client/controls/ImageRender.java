@@ -57,7 +57,7 @@ public class ImageRender extends Control {
         render.addVertexWithUV(0, h, 0,   uMin, vMax);
         render.addVertexWithUV(w, h, 0,   uMax, vMax);
         render.addVertexWithUV(w, 0, 0,   uMax, vMin);
-        render.addVertexWithUV(0, 0, 0,   uMax, vMax);
+        render.addVertexWithUV(0, 0, 0,   vMin, vMin);
 
         tessellator.draw();
 
